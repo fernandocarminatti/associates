@@ -1,0 +1,12 @@
+version: '3'
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=associates'
+      - 'POSTGRES_PASSWORD=associatesSecret'
+      - 'POSTGRES_USER=associatesAdmin'
+    ports:
+      - '5432:5432'
+    volumes:
+      - '/var/lib/postgresql/data'
