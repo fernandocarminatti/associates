@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -37,20 +38,16 @@ public class UserController {
         return ResponseEntity.created(uri).body(savedUser);
     }
 
+    @PatchMapping("/users/{id}")
+    public ResponseEntity<UserModel> updateUser(@PathVariable Integer id, @RequestBody UserModel user) {
+        Optional<UserModel> updatedUser = userService.patchUser(id, user);
+        return updatedUser.map(userModel -> ResponseEntity.ok().body(userModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
     @DeleteMapping("/users/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable Integer id) {
         userService.deleteUserById(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-
-    @ExceptionHandler(CpfException.class)
-    public ResponseEntity<String> handleCpfException(CpfException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
-    }
-
-    @ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<String> handleIdNotFoundException(IdNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
 }

@@ -4,9 +4,9 @@ import com.associates.associates.exceptions.CpfException;
 import com.associates.associates.exceptions.IdNotFoundException;
 import com.associates.associates.model.UserModel;
 import com.associates.associates.repository.UserRepository;
+import com.associates.associates.utils.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -37,5 +37,17 @@ public class UserService {
     @Transactional
     public void deleteUserById(Integer id) {
         userRepository.deleteById(Long.valueOf(id));
+    }
+
+    @Transactional
+    public Optional<UserModel> patchUser(Integer id, UserModel user) {
+        Optional<UserModel> currUser = Optional.ofNullable(this.getUserById(id));
+
+        if(currUser.isPresent()) {
+            Utils.copyNonNull(user, currUser.get());
+            userRepository.save(currUser.get());
+        }
+        
+        return currUser;
     }
 }
