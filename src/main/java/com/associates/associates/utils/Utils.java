@@ -1,10 +1,17 @@
 package com.associates.associates.utils;
 
+import com.associates.associates.exceptions.PropertyException;
+import com.associates.associates.model.UserModel;
+import jakarta.el.PropertyNotFoundException;
+
 import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Utils {
 
-    public static void copyNonNull(Object source, Object target) {
+    public static void copyNonNull(UserModel source, UserModel target) {
         Field[] fields = source.getClass().getDeclaredFields();
 
         for(Field field : fields) {
@@ -18,5 +25,16 @@ public class Utils {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static boolean checkExistenceOfProperty(String[] userModelProperties, String[] properties) {
+        Set<String> propertiesSet = new HashSet<>(Arrays.asList(properties));
+
+        for(String property : userModelProperties) {
+            if(!propertiesSet.contains(property)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

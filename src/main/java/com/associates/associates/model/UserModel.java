@@ -1,5 +1,6 @@
 package com.associates.associates.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.Objects;
@@ -73,6 +74,11 @@ public class UserModel {
     @Override
     public int hashCode() {
         return Objects.hash(userId, firstName, lastName, userCpf);
+    }
+
+    @JsonIgnore
+    public String[] getProperties() {
+        return new String[]{"userId", "firstName", "lastName", "userCpf"};
     }
 
 }

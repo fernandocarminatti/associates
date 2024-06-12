@@ -1,7 +1,5 @@
 package com.associates.associates.controller;
 
-import com.associates.associates.exceptions.CpfException;
-import com.associates.associates.exceptions.IdNotFoundException;
 import com.associates.associates.model.UserModel;
 import com.associates.associates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +39,7 @@ public class UserController {
     @PatchMapping("/users/{id}")
     public ResponseEntity<UserModel> updateUser(@PathVariable Integer id, @RequestBody UserModel user) {
         Optional<UserModel> updatedUser = userService.patchUser(id, user);
-        return updatedUser.map(userModel -> ResponseEntity.ok().body(userModel)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUser.get());
     }
 
     @DeleteMapping("/users/{id}")
