@@ -1,8 +1,11 @@
 package com.associates.associates.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -22,6 +25,10 @@ public class UserModel {
 
     @Column(name = "user_cpf", unique = true)
     private String userCpf;
+
+    @Column(name = "dob")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dateOfBirth;
 
     public UserModel() {
     }
@@ -54,6 +61,14 @@ public class UserModel {
         this.userCpf = userCpf;
     }
 
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     @Override
     public String toString() {
         return "UserModel{" +
@@ -61,6 +76,7 @@ public class UserModel {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", userCpf='" + userCpf + '\'' +
+                ", dateOfBirth=" + dateOfBirth + '\'' +
                 '}';
     }
 
@@ -78,7 +94,7 @@ public class UserModel {
 
     @JsonIgnore
     public String[] getProperties() {
-        return new String[]{"userId", "firstName", "lastName", "userCpf"};
+        return new String[]{"userId", "firstName", "lastName", "userCpf", "dateOfBirth"};
     }
 
 }

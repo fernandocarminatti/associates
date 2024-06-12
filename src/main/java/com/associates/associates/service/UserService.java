@@ -24,7 +24,6 @@ public class UserService {
 
     @Transactional
     public UserModel createUser(UserModel user) {
-        System.out.println("inside service --> " + user);
         if(userRepository.existsByUserCpf(user.getUserCpf())) {
             throw new CpfException("CPF Already Exists");
         }
@@ -53,7 +52,7 @@ public class UserService {
             throw new CpfException("CPF Already Exists");
         }
 
-        if(Utils.checkExistenceOfProperty(user.getProperties(), new String[] {"userId", "firstName", "lastName", "userCpf"})) {
+        if(Utils.checkExistenceOfProperty(user.getProperties(), new String[] {"userId", "firstName", "lastName", "userCpf", "dateOfBirth"})) {
             throw new PropertyException("Properties to update not found, check your data.");
         }
 
