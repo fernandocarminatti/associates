@@ -37,6 +37,9 @@ public class UserService {
 
     @Transactional
     public void deleteUserById(Integer id) {
+        if( !userRepository.existsById(Long.valueOf(id)) ) {
+            throw new IdNotFoundException("ID " + id + " not found");
+        }
         userRepository.deleteById(Long.valueOf(id));
     }
 
@@ -52,7 +55,7 @@ public class UserService {
             throw new CpfException("CPF Already Exists");
         }
 
-        if(Utils.checkExistenceOfProperty(user.getProperties(), new String[] {"userId", "firstName", "lastName", "userCpf", "dateOfBirth"})) {
+        if(Utils.checkExistenceOfProperty(user.getProperties(), new String[] {"firstName", "lastName", "userCpf", "dateOfBirth"})) {
             throw new PropertyException("Properties to update not found, check your data.");
         }
 

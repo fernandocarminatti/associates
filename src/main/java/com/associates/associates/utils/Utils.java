@@ -1,8 +1,6 @@
 package com.associates.associates.utils;
 
-import com.associates.associates.exceptions.PropertyException;
 import com.associates.associates.model.UserModel;
-import jakarta.el.PropertyNotFoundException;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
