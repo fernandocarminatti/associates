@@ -3,10 +3,9 @@ package com.associates.associates.service;
 import com.associates.associates.exceptions.CpfException;
 import com.associates.associates.exceptions.IdNotFoundException;
 import com.associates.associates.exceptions.PropertyException;
-import com.associates.associates.model.UserModel;
+import com.associates.associates.model.User;
 import com.associates.associates.repository.UserRepository;
 import com.associates.associates.utils.Utils;
-import jakarta.el.PropertyNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +17,17 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public Iterable<UserModel> findAllUsers() {
+    public Iterable<User> findAllUsers() {
         return userRepository.findAll();
     }
 
     @Transactional
-    public UserModel createUser(UserModel user) {
+    public User createUser(User user) {
+
+        if( !Utils.checkExistenceOfProperty(user.getProperties() )){
+            throw new PropertyException("Bad request, check your data.");
+        }
+
         if(userRepository.existsByUserCpf(user.getUserCpf())) {
             throw new CpfException("CPF Already Exists");
         }
@@ -31,7 +35,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserModel getUserById(Integer id) {
+    public User getUserById(Integer id) {
         return userRepository.findById(Long.valueOf(id)).orElseThrow(() -> new IdNotFoundException("ID " + id + " not found"));
     }
 
@@ -44,9 +48,9 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<UserModel> patchUser(Integer id, UserModel user) {
+    public Optional<User> patchUser(Integer id, User user) {
 
-        Optional<UserModel> currUser = Optional.ofNullable(this.getUserById(id));
+        Optional<User> currUser = Optional.ofNullable(this.getUserById(id));
         if(!currUser.isPresent()) {
             throw new IdNotFoundException("ID " + id + " not found");
         }
@@ -55,7 +59,7 @@ public class UserService {
             throw new CpfException("CPF Already Exists");
         }
 
-        if(Utils.checkExistenceOfProperty(user.getProperties(), new String[] {"firstName", "lastName", "userCpf", "dateOfBirth"})) {
+        if( !Utils.checkExistenceOfProperty(user.getProperties() )) {
             throw new PropertyException("Properties to update not found, check your data.");
         }
 

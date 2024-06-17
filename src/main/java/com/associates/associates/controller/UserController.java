@@ -1,6 +1,6 @@
 package com.associates.associates.controller;
 
-import com.associates.associates.model.UserModel;
+import com.associates.associates.model.User;
 import com.associates.associates.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,27 +18,28 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public Iterable<UserModel> getAllUsers() {
+    public Iterable<User> getAllUsers() {
          return userService.findAllUsers();
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserModel> getUserById(@PathVariable Integer id) {
-        UserModel user = userService.getUserById(id);
+    public ResponseEntity<User> getUserById(@PathVariable Integer id) {
+        User user = userService.getUserById(id);
         return ResponseEntity.ok().body(user);
 
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/users")
-    public ResponseEntity<UserModel> createUser(@RequestBody UserModel user) {
-        UserModel savedUser = userService.createUser(user);
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        User savedUser = userService.createUser(user);
         URI uri = URI.create("/api/v1/users/" + savedUser.getUserId());
         return ResponseEntity.created(uri).body(savedUser);
     }
 
     @PatchMapping("/users/{id}")
-    public ResponseEntity<UserModel> updateUser(@PathVariable Integer id, @RequestBody UserModel user) {
-        Optional<UserModel> updatedUser = userService.patchUser(id, user);
+    public ResponseEntity<User> updateUser(@PathVariable Integer id, @RequestBody User user) {
+        Optional<User> updatedUser = userService.patchUser(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(updatedUser.get());
     }
 

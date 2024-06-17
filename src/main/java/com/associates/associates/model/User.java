@@ -1,6 +1,5 @@
 package com.associates.associates.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -10,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "associates")
-public class UserModel {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -30,7 +29,7 @@ public class UserModel {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateOfBirth;
 
-    public UserModel() {
+    public User() {
     }
 
     public Long getUserId() {
@@ -83,7 +82,7 @@ public class UserModel {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof UserModel userModel)) return false;
+        if (!(o instanceof User userModel)) return false;
         return Objects.equals(userId, userModel.userId) && Objects.equals(firstName, userModel.firstName) && Objects.equals(lastName, userModel.lastName) && Objects.equals(userCpf, userModel.userCpf);
     }
 

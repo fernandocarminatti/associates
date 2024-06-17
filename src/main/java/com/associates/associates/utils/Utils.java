@@ -1,6 +1,6 @@
 package com.associates.associates.utils;
 
-import com.associates.associates.model.UserModel;
+import com.associates.associates.model.User;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class Utils {
 
-    public static void copyNonNull(UserModel source, UserModel target) {
+    public static void copyNonNull(User source, User target) {
         Field[] fields = source.getClass().getDeclaredFields();
 
         for(Field field : fields) {
@@ -25,8 +25,8 @@ public class Utils {
         }
     }
 
-    public static boolean checkExistenceOfProperty(String[] userModelProperties, String[] properties) {
-        Set<String> propertiesSet = new HashSet<>(Arrays.asList(properties));
+    public static boolean checkExistenceOfProperty(String[] userModelProperties) {
+        Set<String> propertiesSet = new HashSet<>(Arrays.asList("firstName", "lastName", "userCpf", "dateOfBirth"));
 
         for(String property : userModelProperties) {
             if(!propertiesSet.contains(property)) {
